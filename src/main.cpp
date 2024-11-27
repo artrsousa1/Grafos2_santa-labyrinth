@@ -102,13 +102,15 @@ struct GameState {
     return (abs(x - endX) + abs(y - endY));
   }
 
-  bool operator<(const GameState &other) const { return grid < other.grid; }
+  bool operator<(const GameState &other) const {
+    using T = tuple<i32, i32, GameGrid>;
+    return T{x, y, grid} < T{other.x, other.y, other.grid};
+  }
 
   inline bool reachedGoal(void) const { return x == endX and y == endY; }
 
-  bool reachableFromStart() { // so ve se tem como ligar no x , y atual a partir
-                              // do source
-    std::vector vis(numberOfRows, std::vector<char>(numberOfColumns, 0));
+  bool reachableFromStart() {
+    std::vector vis(numberOfRows, std::vector<bool>(numberOfColumns, 0));
     std::queue<std::pair<i32, i32>> q;
 
     vis[startX][startY] = true;
@@ -161,7 +163,29 @@ GameState readInput(void) {
   return ret;
 }
 
+void print_grid(const GameState &g) {
+  for (int i = 0; i < numberOfRows; i++) {
+    for (int j = 0; j < numberOfColumns; j++) {
+      if (g.grid[i][j].l and g.grid[i][j].r) {
+        std::cout << "═";
+      } else if (g.grid[i][j].u and g.grid[i][j].d) {
+        std::cout << "║";
+      } else if (g.grid[i][j].l and g.grid[i][j].d) {
+        std::cout << "╗";
+      } else if (g.grid[i][j].l and g.grid[i][j].u) {
+        std::cout << "╝";
+      } else if (g.grid[i][j].u and g.grid[i][j].r) {
+        std::cout << "╚";
+      } else if (g.grid[i][j].r and g.grid[i][j].d) {
+        std::cout << "╔";
+      }
+    }
+    std::cout << "\n";
+  }
+}
+
 i32 main() {
+
   auto initialGrid = readInput();
 
   std::priority_queue<pqState, vector<pqState>, greater<pqState>> pq;
@@ -180,27 +204,26 @@ i32 main() {
       u = father[u];
       vec.emplace_back(u);
     }
-
-    for (auto v : vec) {
-      dbg(v.grid);
-    }
   };
 
   while (!pq.empty()) {
     auto [uDist, uGameState] = pq.top();
     pq.pop();
 
-    dbg(uDist);
+    std::cout << '\n';
+    print_grid(uGameState);
+    std::cout << '\n';
 
     if (uGameState.reachedGoal()) {
       std::cout << "Killed it !" << std::endl;
-      recover_path(uGameState);
+      print_grid(uGameState);
       return 0;
     }
 
     for (u32 d = 0; d < 5; d++) {
       i32 x2 = uGameState.x + DX[d];
       i32 y2 = uGameState.y + DY[d];
+
       if (not acessibleCoordinate(x2, y2))
         continue;
 
@@ -208,6 +231,7 @@ i32 main() {
 
       for (u32 r = 0; r < 4; r++) {
         if (v.reachableFromStart() and !vis.count(v)) {
+
           father[v] = uGameState;
           vis.emplace(v);
           pq.emplace(v.manhattanDistanceToGoal(), v);
@@ -215,16 +239,11 @@ i32 main() {
 
         // TA ROTACIONANDO O QUE NÃO PODE !
         // rotacionar o x2,y2
-        /*if (v.grid[x2][y2].m)*/
-        v.grid[x2][y2].rotateClockwise();
+        if (v.grid[x2][y2].m)
+          v.grid[x2][y2].rotateClockwise();
       }
     }
   }
 
   std::cout << "Se torou KKKKK" << std::endl;
 }
-
-/*
- * quando não tem como transicionar
- * volta pra última joint
- * */
