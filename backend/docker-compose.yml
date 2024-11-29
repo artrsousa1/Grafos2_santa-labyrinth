@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  santa_labyrinth_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8086:8086
+    env_file:
+      - .backend-env-file.env
+    volumes:
+      - ./api:/app

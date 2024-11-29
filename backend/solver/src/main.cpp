@@ -74,6 +74,7 @@ bool canConnect(const Piece &p1, i32 x1, i32 y1, const Piece &p2, i32 x2,
   return false;
 }
 
+// {}
 const Piece PIECES[6] = {{0, 1, 0, 1}, {1, 0, 1, 0}, {0, 0, 1, 1},
                          {1, 0, 0, 1}, {1, 1, 0, 0}, {0, 1, 1, 0}};
 
@@ -206,16 +207,19 @@ i32 main() {
     }
   };
 
+  i32 steps = 0;
   while (!pq.empty()) {
     auto [uDist, uGameState] = pq.top();
+    steps++;
     pq.pop();
 
     std::cout << '\n';
+    std::cout << steps << '\n';
     print_grid(uGameState);
     std::cout << '\n';
 
     if (uGameState.reachedGoal()) {
-      std::cout << "Killed it !" << std::endl;
+      std::cout << "Killed it  in " << steps << " steps !" << std::endl;
       print_grid(uGameState);
       return 0;
     }
