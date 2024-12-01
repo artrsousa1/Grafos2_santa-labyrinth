@@ -65,10 +65,10 @@ pub fn solver(mut game: GameSchema) -> Option<GameSchema> {
         // Found solution.
         if u_dist == 0 {
             return Some(GameSchema {
-                initial_x: game.initial_x,
-                initial_y: game.initial_y,
-                target_x: game.target_x,
-                target_y: game.target_y,
+                initial_x: game.initial_x + 1,
+                initial_y: game.initial_y + 1,
+                target_x: game.target_x + 1,
+                target_y: game.target_y + 1,
                 number_of_rows: game.number_of_rows,
                 number_of_columns: game.number_of_columns,
                 grid: u_grid,
