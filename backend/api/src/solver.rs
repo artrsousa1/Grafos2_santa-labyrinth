@@ -4,6 +4,7 @@ use crate::game::can_connect;
 use crate::game::CellGrid;
 use crate::game::GameSchema;
 use std::collections::BinaryHeap;
+use std::collections::HashMap;
 use std::collections::HashSet;
 use std::collections::VecDeque;
 
@@ -40,7 +41,7 @@ fn get_state(game: &GameSchema) -> State {
 const DELTA_X: [i32; 5] = [0, -1, 0, 1, 0];
 const DELTA_Y: [i32; 5] = [0, 0, 1, 0, -1];
 
-fn print_grid(grid: &CellGrid) {
+pub fn print_grid(grid: &CellGrid) {
     println!();
     for i in 0..grid.len() as usize {
         for j in 0..grid[i].len() as usize {
@@ -83,6 +84,7 @@ pub fn solver(game: GameSchema) -> Option<GameSchema> {
     {
         // Found solution.
         if u_dist == 0 {
+            print_grid(&u_grid);
             return Some(GameSchema {
                 initial_x: game.initial_x,
                 initial_y: game.initial_y,
@@ -142,7 +144,7 @@ pub fn solver(game: GameSchema) -> Option<GameSchema> {
     None
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, Hash, Eq, PartialEq, Copy)]
 pub struct Coordinate {
     pub x: i32,
     pub y: i32,
@@ -156,10 +158,10 @@ pub struct Solution {
 
 // EEEEEEEEEEEEEEEEEEE trem feio da porra KKKKKKKKKKKKKKKKKKKKKKKK
 pub fn is_solved(grid: &CellGrid, source: Coordinate, target: Coordinate) -> Solution {
-    print_grid(&grid);
     let n = grid.len();
     let m = grid[0].len();
     let mut vis = vec![vec![false; m]; n];
+    let mut parent_coordinate: HashMap<Coordinate, Coordinate> = HashMap::new();
 
     let mut queue = VecDeque::from([Coordinate {
         x: source.x,
@@ -170,9 +172,19 @@ pub fn is_solved(grid: &CellGrid, source: Coordinate, target: Coordinate) -> Sol
 
     while let Some(u) = queue.pop_front() {
         if u.x == target.x && u.y == target.y {
+            dbg!(parent_coordinate.clone());
+            let mut coordinates: Vec<Coordinate> = vec![];
+            let mut current = u;
+            loop {
+                coordinates.push(current.clone());
+                if !parent_coordinate.contains_key(&current) {
+                    break;
+                }
+                current = parent_coordinate[&current];
+            }
             return Solution {
                 solvable: true,
-                coordinates: vec![],
+                coordinates: coordinates,
             };
         }
 
@@ -198,6 +210,7 @@ pub fn is_solved(grid: &CellGrid, source: Coordinate, target: Coordinate) -> Sol
                     continue;
                 }
 
+                parent_coordinate.insert(v, u);
                 vis[v.x as usize][v.y as usize] = true;
                 queue.push_back(v);
             }

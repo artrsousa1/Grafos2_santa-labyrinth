@@ -3,7 +3,7 @@ use game::GameSchema;
 use solver::Coordinate;
 
 mod solver;
-use solver::{is_solved, Solution};
+use solver::is_solved;
 
 use actix_web::{
     get,
@@ -23,6 +23,7 @@ async fn solver_endpoint(data: web::Json<GameSchema>) -> impl Responder {
 
 #[get("/is_solved")]
 async fn is_solvable_endpoint(game: web::Json<GameSchema>) -> impl Responder {
+    solver::print_grid(&game.0.grid);
     return HttpResponse::Ok().json(is_solved(
         &game.0.grid,
         Coordinate {
