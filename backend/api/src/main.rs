@@ -1,7 +1,9 @@
 mod game;
 use game::GameSchema;
+use solver::Coordinate;
 
 mod solver;
+use solver::{is_solved, Solution};
 
 use actix_web::{
     get,
@@ -19,6 +21,21 @@ async fn solver_endpoint(data: web::Json<GameSchema>) -> impl Responder {
     };
 }
 
+#[get("/is_solved")]
+async fn is_solvable_endpoint(game: web::Json<GameSchema>) -> impl Responder {
+    return HttpResponse::Ok().json(is_solved(
+        &game.0.grid,
+        Coordinate {
+            x: game.initial_x,
+            y: game.initial_y,
+        },
+        Coordinate {
+            x: game.0.target_x,
+            y: game.0.target_y,
+        },
+    ));
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let backend_api_port: u16 = match env::var("BACKEND_API_PORT") {
@@ -26,8 +43,12 @@ async fn main() -> std::io::Result<()> {
         Err(_e) => 8086,
     };
 
-    HttpServer::new(|| App::new().service(solver_endpoint))
-        .bind(("0.0.0.0", backend_api_port))?
-        .run()
-        .await
+    HttpServer::new(|| {
+        App::new()
+            .service(solver_endpoint)
+            .service(is_solvable_endpoint)
+    })
+    .bind(("0.0.0.0", backend_api_port))?
+    .run()
+    .await
 }
