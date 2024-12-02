@@ -64,7 +64,7 @@ pub fn print_grid(grid: &CellGrid) {
     }
 }
 
-pub fn solver(game: GameSchema) -> Option<GameSchema> {
+pub async fn solver(game: &GameSchema) -> Option<GameSchema> {
     let mut heap: BinaryHeap<State> = BinaryHeap::new();
     let mut vis: HashSet<State> = HashSet::new();
 
@@ -172,7 +172,6 @@ pub fn is_solved(grid: &CellGrid, source: Coordinate, target: Coordinate) -> Sol
 
     while let Some(u) = queue.pop_front() {
         if u.x == target.x && u.y == target.y {
-            dbg!(parent_coordinate.clone());
             let mut coordinates: Vec<Coordinate> = vec![];
             let mut current = u;
             loop {

@@ -13,11 +13,18 @@ use actix_web::{
 
 use std::env;
 
+use std::time::Duration;
+use tokio::time::timeout;
+
 #[get("/solver")]
 async fn solver_endpoint(data: web::Json<GameSchema>) -> impl Responder {
-    return match solver::solver(data.0) {
-        Some(ret) => HttpResponse::Ok().json(ret),
-        _ => HttpResponse::BadRequest().into(),
+    let result = timeout(Duration::from_secs(13), solver::solver(&data.0)).await;
+    return match result {
+        Ok(ret) => match ret {
+            Some(ret) => HttpResponse::Ok().json(ret),
+            _ => HttpResponse::BadRequest().into(),
+        },
+        Err(_) => HttpResponse::BadRequest().into(),
     };
 }
 
