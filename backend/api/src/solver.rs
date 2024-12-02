@@ -1,6 +1,10 @@
 use serde::{Deserialize, Serialize};
 
-use crate::game::{can_connect, CellGrid, GameSchema};
+use crate::cell_piece::can_connect;
+
+use crate::game::{CellGrid, GameSchema};
+
+use crate::coordinate::{calc_manhattan_negative_distance, Coordinate, DELTA_X, DELTA_Y};
 
 use std::collections::{BinaryHeap, HashMap, HashSet, VecDeque};
 
@@ -13,37 +17,7 @@ struct State {
     grid: CellGrid,
 }
 
-fn calc_manhattan_negative_distance(u: &Coordinate, v: &Coordinate) -> i32 {
-    -((u.x - v.x).abs() + (u.y - v.y).abs())
-}
-
-// 5 directions, center, up, right, down, left (clockwise)
-const DELTA_X: [i32; 5] = [0, -1, 0, 1, 0];
-const DELTA_Y: [i32; 5] = [0, 0, 1, 0, -1];
-
-pub fn print_grid(grid: &CellGrid) {
-    println!();
-    for i in 0..grid.len() as usize {
-        for j in 0..grid[i].len() as usize {
-            if grid[i][j].l && grid[i][j].r {
-                print!("═");
-            } else if grid[i][j].u && grid[i][j].d {
-                print!("║");
-            } else if grid[i][j].l && grid[i][j].d {
-                print!("╗");
-            } else if grid[i][j].l && grid[i][j].u {
-                print!("╝");
-            } else if grid[i][j].u && grid[i][j].r {
-                print!("╚");
-            } else if grid[i][j].r && grid[i][j].d {
-                print!("╔");
-            }
-        }
-        println!();
-        println!();
-    }
-}
-
+// A* solution
 pub async fn solve(
     source: &Coordinate,
     goal: &Coordinate,
@@ -120,12 +94,6 @@ pub async fn solve(
     None
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone, Hash, Eq, PartialEq, Copy, Ord, PartialOrd)]
-pub struct Coordinate {
-    pub x: i32,
-    pub y: i32,
-}
-
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Solution {
     pub solvable: bool,
@@ -189,5 +157,29 @@ pub fn is_solved(source: &Coordinate, goal: &Coordinate, grid: &CellGrid) -> Sol
     Solution {
         solvable: false,
         coordinates: vec![],
+    }
+}
+
+// atestado de incompetência:
+pub fn print_grid(grid: &CellGrid) {
+    println!();
+    for i in 0..grid.len() as usize {
+        for j in 0..grid[i].len() as usize {
+            if grid[i][j].l && grid[i][j].r {
+                print!("═");
+            } else if grid[i][j].u && grid[i][j].d {
+                print!("║");
+            } else if grid[i][j].l && grid[i][j].d {
+                print!("╗");
+            } else if grid[i][j].l && grid[i][j].u {
+                print!("╝");
+            } else if grid[i][j].u && grid[i][j].r {
+                print!("╚");
+            } else if grid[i][j].r && grid[i][j].d {
+                print!("╔");
+            }
+        }
+        println!();
+        println!();
     }
 }
