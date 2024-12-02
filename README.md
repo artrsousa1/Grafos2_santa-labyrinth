@@ -4,28 +4,30 @@
 **Conteúdo da Disciplina**: XXXXXXXXXX<br>
 
 ## Alunos
-|Matrícula | Aluno |
-| -- | -- |
-| 221007850  |  Arthur Ribeiro e Sousa |
-| 211039484  |  Iago Rocha |
 
-## Sobre 
-Descreva os objetivos do seu projeto e como ele funciona. 
+| Matrícula | Aluno                     |
+| --------- | ------------------------- |
+| 221007850 | Arthur Ribeiro e Sousa    |
+| 211039484 | Iago Rocha Santos Marques |
+
+## Sobre
+
+Descreva os objetivos do seu projeto e como ele funciona.
 
 ## Screenshots
+
 Adicione 3 ou mais screenshots do projeto em funcionamento.
 
-## Instalação 
+## Instalação
+
 **Linguagem**: xxxxxx<br>
 **Framework**: (caso exista)<br>
 Descreva os pré-requisitos para rodar o seu projeto e os comandos necessários.
 
-## Uso 
+## Uso
+
 Explique como usar seu projeto caso haja algum passo a passo após o comando de execução.
 
-## Outros 
+## Outros
+
 Quaisquer outras informações sobre seu projeto podem ser descritas abaixo.
-
-
-
-
