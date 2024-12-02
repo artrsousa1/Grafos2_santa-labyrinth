@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import parseMap from '../utils/parser';
+import parserManager from '../utils/parser';
 import Button from '../components/Button';
 
 const asset = {
@@ -30,8 +30,10 @@ function Grid({ map, startGrid }) {
     };
 
     const handleSolve = async (currentState, map) => {
-        const parsed = parseMap(currentState, map);
-        console.log(parsed);
+        const parsed = parserManager.parseMap(currentState, map);
+        const { decodedMap, decodedState } = parserManager.resrap(parsed);
+        console.log(decodedMap);
+        console.log(decodedState);
     }
 
     return (
