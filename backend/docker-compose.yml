@@ -17,6 +17,6 @@ services:
     container_name: frontzin_torado
     ports:
       - 3000:3000
-    command: npm start
     volumes:
-      - ../front:/front
+      - ../front/src:/front/src
+      - ../front/public:/front/public

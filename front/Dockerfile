@@ -2,9 +2,12 @@ FROM node:20-alpine
 
 WORKDIR /front
 
-COPY ./package.json /front/package.json
-COPY ./package-lock.json /front/package-lock.json
+COPY package*.json ./
 
 RUN npm install
 
-COPY ./ /front/
+COPY . .
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
