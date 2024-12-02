@@ -1,9 +1,8 @@
 mod game;
 use game::GameSchema;
-use solver::Coordinate;
 
 mod solver;
-use solver::is_solved;
+use solver::{is_solved, solve};
 
 use actix_web::{
     get,
@@ -12,13 +11,22 @@ use actix_web::{
 };
 
 use std::env;
-
 use std::time::Duration;
+
 use tokio::time::timeout;
+
+mod cell_piece;
+
+mod coordinate;
 
 #[get("/solver")]
 async fn solver_endpoint(data: web::Json<GameSchema>) -> impl Responder {
-    let result = timeout(Duration::from_secs(13), solver::solver(&data.0)).await;
+    // TODO: MAKE SURE IT'S A RECTANGLE MAP
+    let result = timeout(
+        Duration::from_secs(13),
+        solve(&data.0.source, &data.0.goal, &data.0.grid),
+    )
+    .await;
     return match result {
         Ok(ret) => match ret {
             Some(ret) => HttpResponse::Ok().json(ret),
@@ -29,23 +37,14 @@ async fn solver_endpoint(data: web::Json<GameSchema>) -> impl Responder {
 }
 
 #[get("/is_solved")]
-async fn is_solvable_endpoint(game: web::Json<GameSchema>) -> impl Responder {
-    solver::print_grid(&game.0.grid);
-    return HttpResponse::Ok().json(is_solved(
-        &game.0.grid,
-        Coordinate {
-            x: game.initial_x,
-            y: game.initial_y,
-        },
-        Coordinate {
-            x: game.0.target_x,
-            y: game.0.target_y,
-        },
-    ));
+async fn is_solved_endpoint(game: web::Json<GameSchema>) -> impl Responder {
+    return HttpResponse::Ok().json(is_solved(&game.0.source, &game.0.goal, &game.0.grid));
 }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    // Defines which port to run the API based in ENVIRONMENT variable
+    // BACKEND_API_PORT, if no such variable is fond 8086 is used
     let backend_api_port: u16 = match env::var("BACKEND_API_PORT") {
         Ok(val) => val.parse::<u16>().unwrap(),
         Err(_e) => 8086,
@@ -54,7 +53,7 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
             .service(solver_endpoint)
-            .service(is_solvable_endpoint)
+            .service(is_solved_endpoint)
     })
     .bind(("0.0.0.0", backend_api_port))?
     .run()
