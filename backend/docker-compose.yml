@@ -7,9 +7,7 @@ services:
       - 8086:8086
     env_file:
       - .backend-env-file.env
-    volumes:
-      - ./api:/app
-  
+
   santa_labyrinth_front:
     build:
       context: ../front
@@ -20,3 +18,4 @@ services:
     volumes:
       - ../front/src:/front/src
       - ../front/public:/front/public
+

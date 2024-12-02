@@ -43,6 +43,7 @@ pub async fn solve(
     {
         // Found solution.
         if u_dist == 0 {
+            println!("seeeexoooo");
             print_grid(&u_grid);
             return Some(GameSchema {
                 // TODO: shorthand?

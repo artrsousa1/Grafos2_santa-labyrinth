@@ -57,6 +57,7 @@ function Grid({ map, startGrid }) {
             const newGrid = data.grid;
             const decodedGrid = parserManager.resrap(newGrid);
             console.log(decodedGrid);
+            setCells(decodedGrid);
         }
     }
 
