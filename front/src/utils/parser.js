@@ -33,24 +33,17 @@ const parserManager = {
         return parsedArray;
     },
     resrap(parsed) {
-        let decodedMap = Array(7).fill().map(() => Array(7).fill(0));
         let decodedState = Array(7).fill().map(() => Array(7).fill(0));
         for (let i = 0; i < 7; i++) {
             for (let j = 0; j < 7; j++) {
                 const value = parsed[i][j];
                 const key = Object.keys(dict).find(key => dict[key] === value);
-                decodedMap[i][j] = parseInt(key[0]);
                 decodedState[i][j] = parseInt(key[1]);
             }
         }
 
-        decodedMap[0][0] = 8;
-        decodedMap[6][6] = 9;
-
-        return {
-            decodedMap,
-            decodedState
-        }
+        return decodedState
+        
     }
 }
 

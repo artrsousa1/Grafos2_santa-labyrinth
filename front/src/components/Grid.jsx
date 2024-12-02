@@ -55,7 +55,7 @@ function Grid({ map, startGrid }) {
         } else {
             const data = await response.json();
             const newGrid = data.grid;
-            const { decodedMap, decodedGrid } = parserManager.resrap(newGrid);
+            const decodedGrid = parserManager.resrap(newGrid);
             console.log(decodedGrid);
         }
     }
