@@ -1,4 +1,5 @@
 use crate::solver::Coordinate;
+use ::std::mem::swap;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Eq, Copy, Clone, PartialEq, PartialOrd, Ord, Hash)]
@@ -12,18 +13,14 @@ pub struct CellPiece {
 
 impl CellPiece {
     pub fn rotate(&mut self) {
-        let rotated_piece: CellPiece = CellPiece {
-            u: self.l,
-            r: self.u,
-            d: self.r,
-            l: self.d,
-            can_rotate: self.can_rotate,
-        };
-        // TODO: Clone this properly !
-        self.u = rotated_piece.u;
-        self.r = rotated_piece.r;
-        self.d = rotated_piece.d;
-        self.l = rotated_piece.l;
+        /*
+              U        L       L      L
+             L R  ->  U R - > D R -> D U
+              D        D       U      R
+        */
+        swap(&mut self.u, &mut self.l);
+        swap(&mut self.l, &mut self.d);
+        swap(&mut self.r, &mut self.d);
     }
 }
 
