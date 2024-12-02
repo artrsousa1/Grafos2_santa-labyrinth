@@ -5,7 +5,10 @@ module.exports = {
   ],
   theme: {
     colors: {
-      'primary': '#e2f1f3'
+      'primary': '#e2f1f3',
+      'iagorrr': '#f2f2f2',
+      'accent': '#005CGF',
+      'accent-hover': '#2c74de'
     },
     
     extend: {
