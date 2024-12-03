@@ -1,6 +1,11 @@
-# Santa Labyrinth
+<div align="center">
+
+  #  🎅 Santa Labyrinth 🧦
+
+[santalabyrinth.com](http://34.102.117.128:3000)
 
 **Número da Lista**: 44<br>
+
 **Conteúdo da Disciplina**: Grafos2<br>
 
 ## Alunos
@@ -20,6 +25,8 @@ Nesse projeto, foi utilizado uma variação do algoritmo A* para encontrar um ca
 
 ![Exemplo](./assets/santa.gif)
 
+</div>
+
 ## Instalação
 
 Os pré-requisitos para a execução do projeto são:
@@ -30,7 +37,7 @@ Os pré-requisitos para a execução do projeto são:
 
 ## Uso
 
-O jogo está disponível para uso a partir do link http://34.102.117.128:3000
+O jogo está disponível para uso a partir do link [santalabyrinth.com](http://34.102.117.128:3000).
 
 Para executar o projeto localmente basta executar o seguinte comando:
 ```bash
