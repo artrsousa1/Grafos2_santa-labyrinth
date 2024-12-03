@@ -41,9 +41,9 @@ pub async fn solve(
         grid: mut u_grid,
     }) = heap.pop()
     {
+        print_grid(&u_grid);
         // Found solution.
         if u_dist == 0 {
-            print_grid(&u_grid);
             return Some(GameSchema {
                 // TODO: shorthand?
                 source: source.clone(),
@@ -165,7 +165,9 @@ pub fn print_grid(grid: &CellGrid) {
     println!();
     for i in 0..grid.len() as usize {
         for j in 0..grid[i].len() as usize {
-            if grid[i][j].l && grid[i][j].r {
+            if (i == 0 && j == 0) || (i == grid.len() - 1 && j == grid[0].len() - 1) {
+                print!("*");
+            } else if grid[i][j].l && grid[i][j].r {
                 print!("═");
             } else if grid[i][j].u && grid[i][j].d {
                 print!("║");
@@ -180,6 +182,6 @@ pub fn print_grid(grid: &CellGrid) {
             }
         }
         println!();
-        println!();
+        //println!();
     }
 }

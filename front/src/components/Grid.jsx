@@ -31,9 +31,34 @@ function Grid({ map, startGrid }) {
 
     const handleSolve = async (currentState, map) => {
         const parsed = parserManager.parseMap(currentState, map);
-        const { decodedMap, decodedState } = parserManager.resrap(parsed);
-        console.log(decodedMap);
-        console.log(decodedState);
+        const body = JSON.stringify({
+            "source": {
+                "x": 0,
+                "y": 0
+            },
+            "goal": {
+                "x": 6,
+                "y": 6
+            },
+            "grid": parsed
+        });
+        const response = await fetch('http://localhost:8086/solver',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: body
+        })
+        if(!response.ok) {
+            alert('Error');
+            return;
+        } else {
+            const data = await response.json();
+            const newGrid = data.grid;
+            const decodedGrid = parserManager.resrap(newGrid);
+            console.log(decodedGrid);
+            setCells(decodedGrid);
+        }
     }
 
     return (

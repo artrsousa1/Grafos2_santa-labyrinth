@@ -4,8 +4,10 @@ use game::GameSchema;
 mod solver;
 use solver::{is_solved, solve};
 
+use actix_cors::Cors;
+
 use actix_web::{
-    get,
+    post,
     web::{self},
     App, HttpResponse, HttpServer, Responder,
 };
@@ -19,11 +21,11 @@ mod cell_piece;
 
 mod coordinate;
 
-#[get("/solver")]
+#[post("/solver")]
 async fn solver_endpoint(data: web::Json<GameSchema>) -> impl Responder {
     // TODO: MAKE SURE IT'S A RECTANGLE MAP
     let result = timeout(
-        Duration::from_secs(13),
+        Duration::from_secs(30),
         solve(&data.0.source, &data.0.goal, &data.0.grid),
     )
     .await;
@@ -36,7 +38,7 @@ async fn solver_endpoint(data: web::Json<GameSchema>) -> impl Responder {
     };
 }
 
-#[get("/is_solved")]
+#[post("/is_solved")]
 async fn is_solved_endpoint(game: web::Json<GameSchema>) -> impl Responder {
     return HttpResponse::Ok().json(is_solved(&game.0.source, &game.0.goal, &game.0.grid));
 }
@@ -51,7 +53,9 @@ async fn main() -> std::io::Result<()> {
     };
 
     HttpServer::new(|| {
+        let cors = Cors::permissive();
         App::new()
+            .wrap(cors)
             .service(solver_endpoint)
             .service(is_solved_endpoint)
     })
