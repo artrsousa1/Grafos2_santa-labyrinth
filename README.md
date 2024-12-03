@@ -1,7 +1,7 @@
 # Santa Labyrinth
 
-**Número da Lista**: X<br>
-**Conteúdo da Disciplina**: XXXXXXXXXX<br>
+**Número da Lista**: 44<br>
+**Conteúdo da Disciplina**: Grafos2<br>
 
 ## Alunos
 
@@ -12,22 +12,27 @@
 
 ## Sobre
 
-Descreva os objetivos do seu projeto e como ele funciona.
+Este projeto é uma adaptação do jogo [Santa Labyrinth](https://www.digipuzzle.net/christmas/cartoons/puzzles/labyrinth.htm?language=english&linkback=../../../education/christmas/index.htm), que consiste em um labirinto representado por um grid 7x7, onde o objetivo é levar o Papai Noel até a meia.
+
+Nesse projeto, foi utilizado uma variação do algoritmo A* para encontrar um caminho válido para o Papai Noel. A implementação do backend foi feita em Rust, enquanto o frontend foi feito em React.
 
 ## Screenshots
 
-Adicione 3 ou mais screenshots do projeto em funcionamento.
+![Exemplo](./assets/santa.gif)
 
 ## Instalação
 
-**Linguagem**: xxxxxx<br>
-**Framework**: (caso exista)<br>
-Descreva os pré-requisitos para rodar o seu projeto e os comandos necessários.
+Os pré-requisitos para a execução do projeto são:
+
+- Docker 27.3.1
+- Docker Compose 3.8
+- GNU Make 4.3
 
 ## Uso
 
-Explique como usar seu projeto caso haja algum passo a passo após o comando de execução.
+Para executar o projeto basta executar o seguinte comando:
+```bash
+make start
+```
 
-## Outros
-
-Quaisquer outras informações sobre seu projeto podem ser descritas abaixo.
+Após o comando ser executado, você pode acessar o projeto pelo link http://localhost:3000.
