@@ -30,7 +30,9 @@ Os pré-requisitos para a execução do projeto são:
 
 ## Uso
 
-Para executar o projeto basta executar o seguinte comando:
+O jogo está disponível para uso a partir do link http://34.102.117.128:3000
+
+Para executar o projeto localmente basta executar o seguinte comando:
 ```bash
 make start
 ```
