@@ -36,3 +36,7 @@ make start
 ```
 
 Após o comando ser executado, você pode acessar o projeto pelo link http://localhost:3000.
+
+## Vídeo 
+
+- [Apresentação](https://youtu.be/IBu_eWggxDI)
