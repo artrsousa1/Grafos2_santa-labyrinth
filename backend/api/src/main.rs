@@ -23,10 +23,9 @@ mod coordinate;
 
 #[post("/solver")]
 async fn solver_endpoint(data: web::Json<GameSchema>) -> impl Responder {
-    print!("{:?}", data.0.grid[0][0]);
     // TODO: MAKE SURE IT'S A RECTANGLE MAP
     let result = timeout(
-        Duration::from_secs(13),
+        Duration::from_secs(30),
         solve(&data.0.source, &data.0.goal, &data.0.grid),
     )
     .await;
